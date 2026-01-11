@@ -179,6 +179,12 @@ def get_local_path(
             logger.debug(
                 f"Local Storage file path exists locally, use it as a local file: {filepath}"
             )
+            if cache_dir and download_resources:
+                # 确保缓存目录存在
+                os.makedirs(cache_dir, exist_ok=True)
+                # 复制文件到缓存目录
+                shutil.copy(filepath, cache_dir)
+
             return filepath
 
     # try to get local directories
