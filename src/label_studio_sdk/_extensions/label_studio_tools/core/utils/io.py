@@ -40,7 +40,7 @@ def get_cache_dir():
 
 
 def safe_build_path(base_dir: str, user_path: str) -> str:
-    combined_path = os.path.join(base_dir, user_path)
+    combined_path = os.path.join(base_dir, urllib.parse.unquote(user_path))
     absolute_path = os.path.abspath(combined_path)
     base_dir_abs = os.path.abspath(base_dir)
 
