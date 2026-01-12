@@ -6,7 +6,7 @@ import shutil
 import base64
 from contextlib import contextmanager
 from tempfile import mkdtemp
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, urlparse, unquote
 import jwt
 
 import requests
@@ -40,7 +40,7 @@ def get_cache_dir():
 
 
 def safe_build_path(base_dir: str, user_path: str) -> str:
-    combined_path = os.path.join(base_dir, urllib.parse.unquote(user_path))
+    combined_path = os.path.join(base_dir, unquote(user_path))
     absolute_path = os.path.abspath(combined_path)
     base_dir_abs = os.path.abspath(base_dir)
 
