@@ -6,7 +6,7 @@ import shutil
 import base64
 from contextlib import contextmanager
 from tempfile import mkdtemp
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, urlparse, unquote
 import jwt
 
 import requests
@@ -40,7 +40,7 @@ def get_cache_dir():
 
 
 def safe_build_path(base_dir: str, user_path: str) -> str:
-    combined_path = os.path.join(base_dir, user_path)
+    combined_path = os.path.join(base_dir, unquote(user_path))
     absolute_path = os.path.abspath(combined_path)
     base_dir_abs = os.path.abspath(base_dir)
 
@@ -179,6 +179,12 @@ def get_local_path(
             logger.debug(
                 f"Local Storage file path exists locally, use it as a local file: {filepath}"
             )
+            if cache_dir and download_resources:
+                # 确保缓存目录存在
+                os.makedirs(cache_dir, exist_ok=True)
+                # 复制文件到缓存目录
+                shutil.copy(filepath, cache_dir)
+
             return filepath
 
     # try to get local directories
