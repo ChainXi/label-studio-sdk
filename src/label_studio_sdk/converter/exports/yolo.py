@@ -82,6 +82,13 @@ def process_and_save_yolo_annotations(labels, label_path, category_name_to_id, c
     tmp_path = f"{label_path}.tmp"
 
     try:
+        if os.path.exists(label_path):
+            with open(label_path, 'r', encoding='utf-8') as src:
+                with open(tmp_path, 'w', encoding='utf-8') as dst:
+                    dst.write(src.read())
+        else:
+            open(tmp_path, 'w', encoding='utf-8').close()
+
         with open(tmp_path, "w") as f:
             for label in labels:
                 category_name = None
