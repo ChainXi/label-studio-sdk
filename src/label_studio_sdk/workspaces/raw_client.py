@@ -23,6 +23,7 @@ class RawWorkspacesClient:
         self,
         *,
         include_all_workspaces: typing.Optional[bool] = None,
+        is_archived: typing.Optional[bool] = None,
         is_personal: typing.Optional[bool] = None,
         ordering: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -40,6 +41,9 @@ class RawWorkspacesClient:
         ----------
         include_all_workspaces : typing.Optional[bool]
             Include all workspaces in the organization, including other users' personal workspaces. Only effective for users with Administrator or Owner role. When enabled, the response includes created_by_user info for personal workspaces.
+
+        is_archived : typing.Optional[bool]
+            Filter by archived status. Set to false to exclude archived workspaces.
 
         is_personal : typing.Optional[bool]
             Workspace is a personal user workspace.
@@ -60,6 +64,7 @@ class RawWorkspacesClient:
             method="GET",
             params={
                 "include_all_workspaces": include_all_workspaces,
+                "is_archived": is_archived,
                 "is_personal": is_personal,
                 "ordering": ordering,
             },
@@ -102,9 +107,10 @@ class RawWorkspacesClient:
         Parameters
         ----------
         title : str
-            Workspace name
+            Workspace Name
 
         color : typing.Optional[str]
+            Color
 
         description : typing.Optional[str]
             Workspace description
@@ -255,6 +261,7 @@ class RawWorkspacesClient:
         id : int
 
         color : typing.Optional[str]
+            Color
 
         description : typing.Optional[str]
             Workspace description
@@ -266,7 +273,7 @@ class RawWorkspacesClient:
             Workspace is a personal user workspace
 
         title : typing.Optional[str]
-            Workspace name
+            Workspace Name
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -316,6 +323,7 @@ class AsyncRawWorkspacesClient:
         self,
         *,
         include_all_workspaces: typing.Optional[bool] = None,
+        is_archived: typing.Optional[bool] = None,
         is_personal: typing.Optional[bool] = None,
         ordering: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -333,6 +341,9 @@ class AsyncRawWorkspacesClient:
         ----------
         include_all_workspaces : typing.Optional[bool]
             Include all workspaces in the organization, including other users' personal workspaces. Only effective for users with Administrator or Owner role. When enabled, the response includes created_by_user info for personal workspaces.
+
+        is_archived : typing.Optional[bool]
+            Filter by archived status. Set to false to exclude archived workspaces.
 
         is_personal : typing.Optional[bool]
             Workspace is a personal user workspace.
@@ -353,6 +364,7 @@ class AsyncRawWorkspacesClient:
             method="GET",
             params={
                 "include_all_workspaces": include_all_workspaces,
+                "is_archived": is_archived,
                 "is_personal": is_personal,
                 "ordering": ordering,
             },
@@ -395,9 +407,10 @@ class AsyncRawWorkspacesClient:
         Parameters
         ----------
         title : str
-            Workspace name
+            Workspace Name
 
         color : typing.Optional[str]
+            Color
 
         description : typing.Optional[str]
             Workspace description
@@ -552,6 +565,7 @@ class AsyncRawWorkspacesClient:
         id : int
 
         color : typing.Optional[str]
+            Color
 
         description : typing.Optional[str]
             Workspace description
@@ -563,7 +577,7 @@ class AsyncRawWorkspacesClient:
             Workspace is a personal user workspace
 
         title : typing.Optional[str]
-            Workspace name
+            Workspace Name
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

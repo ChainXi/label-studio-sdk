@@ -65,6 +65,7 @@ class RawSamlClient:
         self,
         *,
         domain: typing.Optional[str] = OMIT,
+        idp_provider: typing.Optional[str] = OMIT,
         mapping_email: typing.Optional[str] = OMIT,
         mapping_first_name: typing.Optional[str] = OMIT,
         mapping_groups: typing.Optional[str] = OMIT,
@@ -90,6 +91,9 @@ class RawSamlClient:
         domain : typing.Optional[str]
             Organization web domain or domains; use comma separated list with no spaces for multiple. Example:<br><br>labelstud.io,humansignal.com<br><br>IMPORTANT: DO NOT PUT COMMON DOMAINS LIKE GMAIL.COM, YAHOO.COM, ETC. IN THIS FIELD
 
+        idp_provider : typing.Optional[str]
+            Identity Provider preset key (e.g. okta, azure, google, custom)
+
         mapping_email : typing.Optional[str]
             Mapping attributes: user email from SAML request
 
@@ -109,10 +113,13 @@ class RawSamlClient:
             Metadata XML file
 
         projects_groups : typing.Optional[typing.Sequence[ProjectGroupRequest]]
+            Projects to Groups Mapping. List of objects with project_id, group, role.
 
         roles_groups : typing.Optional[typing.Sequence[typing.Sequence[str]]]
+            Organization Roles to Groups Mapping. List of [role_name, group_name] pairs.
 
         workspaces_groups : typing.Optional[typing.Sequence[typing.Sequence[str]]]
+            Workspaces to Groups Mapping. List of [workspace_title, group_name] pairs.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -127,6 +134,7 @@ class RawSamlClient:
             method="POST",
             json={
                 "domain": domain,
+                "idp_provider": idp_provider,
                 "mapping_email": mapping_email,
                 "mapping_first_name": mapping_first_name,
                 "mapping_groups": mapping_groups,
@@ -155,6 +163,38 @@ class RawSamlClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def reset(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
+        """
+        <Card href="https://humansignal.com/goenterprise">
+                <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+                <p style="margin-top: 10px; font-size: 14px;">
+                    This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+                </p>
+            </Card>
+        Reset SAML2 settings for the currently active organization. This clears all configured fields (domain, metadata, attribute mappings, group mappings) back to their defaults without deleting the underlying settings record.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[None]
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "api/saml/settings",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return HttpResponse(response=_response, data=None)
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -209,6 +249,7 @@ class AsyncRawSamlClient:
         self,
         *,
         domain: typing.Optional[str] = OMIT,
+        idp_provider: typing.Optional[str] = OMIT,
         mapping_email: typing.Optional[str] = OMIT,
         mapping_first_name: typing.Optional[str] = OMIT,
         mapping_groups: typing.Optional[str] = OMIT,
@@ -234,6 +275,9 @@ class AsyncRawSamlClient:
         domain : typing.Optional[str]
             Organization web domain or domains; use comma separated list with no spaces for multiple. Example:<br><br>labelstud.io,humansignal.com<br><br>IMPORTANT: DO NOT PUT COMMON DOMAINS LIKE GMAIL.COM, YAHOO.COM, ETC. IN THIS FIELD
 
+        idp_provider : typing.Optional[str]
+            Identity Provider preset key (e.g. okta, azure, google, custom)
+
         mapping_email : typing.Optional[str]
             Mapping attributes: user email from SAML request
 
@@ -253,10 +297,13 @@ class AsyncRawSamlClient:
             Metadata XML file
 
         projects_groups : typing.Optional[typing.Sequence[ProjectGroupRequest]]
+            Projects to Groups Mapping. List of objects with project_id, group, role.
 
         roles_groups : typing.Optional[typing.Sequence[typing.Sequence[str]]]
+            Organization Roles to Groups Mapping. List of [role_name, group_name] pairs.
 
         workspaces_groups : typing.Optional[typing.Sequence[typing.Sequence[str]]]
+            Workspaces to Groups Mapping. List of [workspace_title, group_name] pairs.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -271,6 +318,7 @@ class AsyncRawSamlClient:
             method="POST",
             json={
                 "domain": domain,
+                "idp_provider": idp_provider,
                 "mapping_email": mapping_email,
                 "mapping_first_name": mapping_first_name,
                 "mapping_groups": mapping_groups,
@@ -299,6 +347,38 @@ class AsyncRawSamlClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def reset(self, *, request_options: typing.Optional[RequestOptions] = None) -> AsyncHttpResponse[None]:
+        """
+        <Card href="https://humansignal.com/goenterprise">
+                <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+                <p style="margin-top: 10px; font-size: 14px;">
+                    This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+                </p>
+            </Card>
+        Reset SAML2 settings for the currently active organization. This clears all configured fields (domain, metadata, attribute mappings, group mappings) back to their defaults without deleting the underlying settings record.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[None]
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "api/saml/settings",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return AsyncHttpResponse(response=_response, data=None)
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)

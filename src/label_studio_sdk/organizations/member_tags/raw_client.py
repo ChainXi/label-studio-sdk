@@ -115,6 +115,7 @@ class RawMemberTagsClient:
             A unique integer value identifying this organization.
 
         label : str
+            Label
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -218,10 +219,10 @@ class RawMemberTagsClient:
             Filter is_deleted by exact match
 
         role : typing.Optional[str]
-            Filter role by in list (comma-separated values)
+            Multiple values may be separated by commas. (comma-separated values)
 
         tags : typing.Optional[str]
-            Filter tags by in list (comma-separated values)
+            Multiple values may be separated by commas. (comma-separated values)
 
         user_last_activity_gte : typing.Optional[str]
             Filter user__last_activity by greater than or equal to
@@ -616,6 +617,7 @@ class RawMemberTagsClient:
             A unique integer value identifying this member tag.
 
         label : typing.Optional[str]
+            Label
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -778,6 +780,7 @@ class AsyncRawMemberTagsClient:
             A unique integer value identifying this organization.
 
         label : str
+            Label
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -881,10 +884,10 @@ class AsyncRawMemberTagsClient:
             Filter is_deleted by exact match
 
         role : typing.Optional[str]
-            Filter role by in list (comma-separated values)
+            Multiple values may be separated by commas. (comma-separated values)
 
         tags : typing.Optional[str]
-            Filter tags by in list (comma-separated values)
+            Multiple values may be separated by commas. (comma-separated values)
 
         user_last_activity_gte : typing.Optional[str]
             Filter user__last_activity by greater than or equal to
@@ -1279,6 +1282,7 @@ class AsyncRawMemberTagsClient:
             A unique integer value identifying this member tag.
 
         label : typing.Optional[str]
+            Label
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

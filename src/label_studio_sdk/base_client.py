@@ -18,6 +18,7 @@ if typing.TYPE_CHECKING:
     from .annotations.client import AnnotationsClient, AsyncAnnotationsClient
     from .billing.client import AsyncBillingClient, BillingClient
     from .comments.client import AsyncCommentsClient, CommentsClient
+    from .dimensions.client import AsyncDimensionsClient, DimensionsClient
     from .export_storage.client import AsyncExportStorageClient, ExportStorageClient
     from .files.client import AsyncFilesClient, FilesClient
     from .import_storage.client import AsyncImportStorageClient, ImportStorageClient
@@ -31,6 +32,7 @@ if typing.TYPE_CHECKING:
     from .prompts.client import AsyncPromptsClient, PromptsClient
     from .session_policy.client import AsyncSessionPolicyClient, SessionPolicyClient
     from .sso.client import AsyncSsoClient, SsoClient
+    from .states.client import AsyncStatesClient, StatesClient
     from .tasks.client import AsyncTasksClient, TasksClient
     from .tokens.client import AsyncTokensClient, TokensClient
     from .users.client import AsyncUsersClient, UsersClient
@@ -116,10 +118,12 @@ class LabelStudioBase:
         self._billing: typing.Optional[BillingClient] = None
         self._comments: typing.Optional[CommentsClient] = None
         self._users: typing.Optional[UsersClient] = None
+        self._dimensions: typing.Optional[DimensionsClient] = None
         self._actions: typing.Optional[ActionsClient] = None
         self._views: typing.Optional[ViewsClient] = None
-        self._organizations: typing.Optional[OrganizationsClient] = None
+        self._states: typing.Optional[StatesClient] = None
         self._files: typing.Optional[FilesClient] = None
+        self._organizations: typing.Optional[OrganizationsClient] = None
         self._jwt_settings: typing.Optional[JwtSettingsClient] = None
         self._ml: typing.Optional[MlClient] = None
         self._model_providers: typing.Optional[ModelProvidersClient] = None
@@ -194,6 +198,14 @@ class LabelStudioBase:
         return self._users
 
     @property
+    def dimensions(self):
+        if self._dimensions is None:
+            from .dimensions.client import DimensionsClient  # noqa: E402
+
+            self._dimensions = DimensionsClient(client_wrapper=self._client_wrapper)
+        return self._dimensions
+
+    @property
     def actions(self):
         if self._actions is None:
             from .actions.client import ActionsClient  # noqa: E402
@@ -210,12 +222,12 @@ class LabelStudioBase:
         return self._views
 
     @property
-    def organizations(self):
-        if self._organizations is None:
-            from .organizations.client import OrganizationsClient  # noqa: E402
+    def states(self):
+        if self._states is None:
+            from .states.client import StatesClient  # noqa: E402
 
-            self._organizations = OrganizationsClient(client_wrapper=self._client_wrapper)
-        return self._organizations
+            self._states = StatesClient(client_wrapper=self._client_wrapper)
+        return self._states
 
     @property
     def files(self):
@@ -224,6 +236,14 @@ class LabelStudioBase:
 
             self._files = FilesClient(client_wrapper=self._client_wrapper)
         return self._files
+
+    @property
+    def organizations(self):
+        if self._organizations is None:
+            from .organizations.client import OrganizationsClient  # noqa: E402
+
+            self._organizations = OrganizationsClient(client_wrapper=self._client_wrapper)
+        return self._organizations
 
     @property
     def jwt_settings(self):
@@ -430,10 +450,12 @@ class AsyncLabelStudioBase:
         self._billing: typing.Optional[AsyncBillingClient] = None
         self._comments: typing.Optional[AsyncCommentsClient] = None
         self._users: typing.Optional[AsyncUsersClient] = None
+        self._dimensions: typing.Optional[AsyncDimensionsClient] = None
         self._actions: typing.Optional[AsyncActionsClient] = None
         self._views: typing.Optional[AsyncViewsClient] = None
-        self._organizations: typing.Optional[AsyncOrganizationsClient] = None
+        self._states: typing.Optional[AsyncStatesClient] = None
         self._files: typing.Optional[AsyncFilesClient] = None
+        self._organizations: typing.Optional[AsyncOrganizationsClient] = None
         self._jwt_settings: typing.Optional[AsyncJwtSettingsClient] = None
         self._ml: typing.Optional[AsyncMlClient] = None
         self._model_providers: typing.Optional[AsyncModelProvidersClient] = None
@@ -508,6 +530,14 @@ class AsyncLabelStudioBase:
         return self._users
 
     @property
+    def dimensions(self):
+        if self._dimensions is None:
+            from .dimensions.client import AsyncDimensionsClient  # noqa: E402
+
+            self._dimensions = AsyncDimensionsClient(client_wrapper=self._client_wrapper)
+        return self._dimensions
+
+    @property
     def actions(self):
         if self._actions is None:
             from .actions.client import AsyncActionsClient  # noqa: E402
@@ -524,12 +554,12 @@ class AsyncLabelStudioBase:
         return self._views
 
     @property
-    def organizations(self):
-        if self._organizations is None:
-            from .organizations.client import AsyncOrganizationsClient  # noqa: E402
+    def states(self):
+        if self._states is None:
+            from .states.client import AsyncStatesClient  # noqa: E402
 
-            self._organizations = AsyncOrganizationsClient(client_wrapper=self._client_wrapper)
-        return self._organizations
+            self._states = AsyncStatesClient(client_wrapper=self._client_wrapper)
+        return self._states
 
     @property
     def files(self):
@@ -538,6 +568,14 @@ class AsyncLabelStudioBase:
 
             self._files = AsyncFilesClient(client_wrapper=self._client_wrapper)
         return self._files
+
+    @property
+    def organizations(self):
+        if self._organizations is None:
+            from .organizations.client import AsyncOrganizationsClient  # noqa: E402
+
+            self._organizations = AsyncOrganizationsClient(client_wrapper=self._client_wrapper)
+        return self._organizations
 
     @property
     def jwt_settings(self):

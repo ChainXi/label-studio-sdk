@@ -3383,6 +3383,526 @@ client.users.update(
 </dl>
 </details>
 
+## Dimensions
+<details><summary><code>client.dimensions.<a href="src/label_studio_sdk/dimensions/client.py">trigger_backfill</a>(...) -&gt; AsyncHttpResponse[AgreementV2BackfillTriggerResponse]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Card href="https://humansignal.com/goenterprise">
+        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+        <p style="margin-top: 10px; font-size: 14px;">
+            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+        </p>
+    </Card>
+Trigger an Agreement V2 backfill for the authenticated user's active organization. Recomputes agreement score matrices for all tasks that are missing them. Exactly one of three body fields must be provided:
+
+- **project_id**: backfill a single specific project.
+- **num_projects**: batched org backfill — queue the next N not-yet-started projects (in ascending project ID order), leaving any currently in-flight jobs untouched. Repeat calls until `projects_remaining` in the response reaches 0.
+- **all_projects**: full org backfill — cancel all in-flight jobs and queue every remaining non-completed project at once.
+
+Requires administrator or owner role and the Agreement V2 feature flag.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+client.dimensions.trigger_backfill()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**all_projects:** `typing.Optional[bool]` — Set to true to trigger a full org backfill (cancels in-flight jobs and queues all remaining projects).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**num_projects:** `typing.Optional[int]` — Queue at most this many projects per call (batched mode).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**project_id:** `typing.Optional[int]` — Backfill a single specific project.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.dimensions.<a href="src/label_studio_sdk/dimensions/client.py">cancel_backfill</a>(...) -&gt; AsyncHttpResponse[AgreementV2BackfillCancelResponse]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Card href="https://humansignal.com/goenterprise">
+        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+        <p style="margin-top: 10px; font-size: 14px;">
+            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+        </p>
+    </Card>
+Cancel Agreement V2 backfill jobs for the authenticated user's active organization. Cancel a specific job by job_id, all jobs for a specific project by project_id, or all backfill jobs for the entire organization if neither is provided.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+client.dimensions.cancel_backfill()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**job_id:** `typing.Optional[int]` — Optional specific job ID to cancel
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**project_id:** `typing.Optional[int]` — Optional project ID to cancel its active backfill jobs
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.dimensions.<a href="src/label_studio_sdk/dimensions/client.py">list_backfills</a>(...) -&gt; AsyncHttpResponse[typing.List[AgreementV2BackfillJob]]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Card href="https://humansignal.com/goenterprise">
+        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+        <p style="margin-top: 10px; font-size: 14px;">
+            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+        </p>
+    </Card>
+Retrieve Agreement V2 backfill jobs for the authenticated user's active organization, ordered by most-recently created first. Supports page / page_size query params (default 50 per page, max 500). Requires administrator or owner role and the Agreement V2 feature flag.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+client.dimensions.list_backfills()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[str]` — Filter by job status: PENDING, QUEUED, RUNNING, COMPLETED, or FAILED.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.dimensions.<a href="src/label_studio_sdk/dimensions/client.py">get_backfill_status</a>(...) -&gt; AsyncHttpResponse[AgreementV2BackfillJob]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Card href="https://humansignal.com/goenterprise">
+        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+        <p style="margin-top: 10px; font-size: 14px;">
+            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+        </p>
+    </Card>
+Retrieve the status of an Agreement V2 backfill job for the authenticated user's active organization. By default returns the aggregated organization status. Specify job_id or project_id to get a specific job status. Requires administrator or owner role and the Agreement V2 feature flag.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+client.dimensions.get_backfill_status()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**job_id:** `typing.Optional[int]` — Optional job ID to retrieve specific job status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**project_id:** `typing.Optional[int]` — Optional project ID to retrieve the latest backfill status for that project. If omitted, returns aggregated organization status.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.dimensions.<a href="src/label_studio_sdk/dimensions/client.py">list</a>(...) -&gt; AsyncHttpResponse[typing.List[DimensionList]]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Card href="https://humansignal.com/goenterprise">
+        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+        <p style="margin-top: 10px; font-size: 14px;">
+            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+        </p>
+    </Card>
+List all dimensions for a specific project.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+client.dimensions.list(
+    project_pk=1,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**project_pk:** `int` — Project ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**agreement_methodology:** `typing.Optional[str]` — Agreement methodology to use for computing allowed_metrics_with_params. If not provided, uses the methodology stored in the project settings. Valid values: "pairwise", "consensus". 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_active:** `typing.Optional[bool]` — Filter by active status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ordering:** `typing.Optional[str]` — Which field to use when ordering the results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.dimensions.<a href="src/label_studio_sdk/dimensions/client.py">get</a>(...) -&gt; AsyncHttpResponse[Dimension]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Card href="https://humansignal.com/goenterprise">
+        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+        <p style="margin-top: 10px; font-size: 14px;">
+            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+        </p>
+    </Card>
+Retrieve a specific dimension by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+client.dimensions.get(
+    project_pk=1,
+    id=1,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**project_pk:** `int` — Project ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**id:** `int` — Dimension ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Actions
 <details><summary><code>client.actions.<a href="src/label_studio_sdk/actions/client.py">list</a>(...) -&gt; AsyncHttpResponse[typing.List[ListActionsResponseItem]]</code></summary>
 <dl>
@@ -4106,8 +4626,8 @@ client.views.update(
 </dl>
 </details>
 
-## Organizations
-<details><summary><code>client.organizations.<a href="src/label_studio_sdk/organizations/client.py">reset_token</a>() -&gt; AsyncHttpResponse[OrganizationInvite]</code></summary>
+## States
+<details><summary><code>client.states.<a href="src/label_studio_sdk/states/client.py">trigger_backfill</a>(...) -&gt; AsyncHttpResponse[StateBackfillResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4119,7 +4639,13 @@ client.views.update(
 <dl>
 <dd>
 
-Reset the token used in the invitation link to invite someone to an organization.
+<Card href="https://humansignal.com/goenterprise">
+        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+        <p style="margin-top: 10px; font-size: 14px;">
+            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+        </p>
+    </Card>
+Trigger state backfill for the authenticated user's active organization. Creates initial state records for entities without states. Requires administrator or owner role and both FSM feature flags (fflag_feat_fit_568_finite_state_management and fflag_feat_fit_710_fsm_state_fields).
 </dd>
 </dl>
 </dd>
@@ -4139,7 +4665,163 @@ from label_studio_sdk import LabelStudio
 client = LabelStudio(
     api_key="YOUR_API_KEY",
 )
-client.organizations.reset_token()
+client.states.trigger_backfill()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**project_id:** `typing.Optional[int]` — Optional project ID to trigger backfill for a single project
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.states.<a href="src/label_studio_sdk/states/client.py">cancel_backfill</a>(...) -&gt; AsyncHttpResponse[StateBackfillCancelResponse]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Card href="https://humansignal.com/goenterprise">
+        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+        <p style="margin-top: 10px; font-size: 14px;">
+            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+        </p>
+    </Card>
+Cancel state backfill jobs for the authenticated user's active organization. Can cancel a specific job by job_id, all jobs for a specific project by project_id, or all backfill jobs for the entire organization if neither is provided.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+client.states.cancel_backfill()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**job_id:** `typing.Optional[int]` — Optional specific job ID to cancel
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**project_id:** `typing.Optional[int]` — Optional project ID to cancel its active jobs
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.states.<a href="src/label_studio_sdk/states/client.py">list_backfills</a>() -&gt; AsyncHttpResponse[StateBackfillJobListResponse]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Card href="https://humansignal.com/goenterprise">
+        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+        <p style="margin-top: 10px; font-size: 14px;">
+            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+        </p>
+    </Card>
+Retrieve the latest 10 state backfill jobs for the authenticated user's active organization. Shows job history with status, progress, and timing information. Requires administrator or owner role and both FSM feature flags (fflag_feat_fit_568_finite_state_management and fflag_feat_fit_710_fsm_state_fields).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+client.states.list_backfills()
 
 ```
 </dd>
@@ -4167,7 +4849,7 @@ client.organizations.reset_token()
 </dl>
 </details>
 
-<details><summary><code>client.organizations.<a href="src/label_studio_sdk/organizations/client.py">list</a>(...) -&gt; AsyncHttpResponse[typing.List[OrganizationId]]</code></summary>
+<details><summary><code>client.states.<a href="src/label_studio_sdk/states/client.py">get_backfill_status</a>(...) -&gt; AsyncHttpResponse[StateBackfillStatusResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4179,9 +4861,13 @@ client.organizations.reset_token()
 <dl>
 <dd>
 
-
-        Return a list of the organizations you've created or that you have access to.
-        
+<Card href="https://humansignal.com/goenterprise">
+        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+        <p style="margin-top: 10px; font-size: 14px;">
+            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+        </p>
+    </Card>
+Retrieve the status of a state backfill job for the authenticated user's active organization. By default returns the aggregated org status, or specify job_id or project_id to get explicit job statuses. Shows progress, completion time, and any errors. Requires administrator or owner role and both FSM feature flags (fflag_feat_fit_568_finite_state_management and fflag_feat_fit_710_fsm_state_fields).
 </dd>
 </dl>
 </dd>
@@ -4201,7 +4887,7 @@ from label_studio_sdk import LabelStudio
 client = LabelStudio(
     api_key="YOUR_API_KEY",
 )
-client.organizations.list()
+client.states.get_backfill_status()
 
 ```
 </dd>
@@ -4213,6 +4899,128 @@ client.organizations.list()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**job_id:** `typing.Optional[int]` — Optional job ID to retrieve specific job status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**project_id:** `typing.Optional[int]` — Optional project ID to retrieve the latest job status for a project. If omitted, returns aggregated org status.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.states.<a href="src/label_studio_sdk/states/client.py">state_history</a>(...) -&gt; AsyncPager[StateModel, PaginatedStateModelList]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Card href="https://humansignal.com/goenterprise">
+        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+        <p style="margin-top: 10px; font-size: 14px;">
+            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+        </p>
+    </Card>
+Get the state history of an entity
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+response = client.states.state_history(
+    entity_name="entity_name",
+    entity_id=1,
+)
+for item in response:
+    yield item
+# alternatively, you can paginate page-by-page
+for page in response.iter_pages():
+    yield page
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_id:** `int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_from:** `typing.Optional[str]` — Filter for state history items created at or after the ISO 8601 formatted date (YYYY-MM-DDTHH:MM:SS)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_to:** `typing.Optional[str]` — Filter for state history items created at or before the ISO 8601 formatted date (YYYY-MM-DDTHH:MM:SS)
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -4225,69 +5033,47 @@ client.organizations.list()
 <dl>
 <dd>
 
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+**page:** `typing.Optional[int]` — A page number within the paginated result set.
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**page_size:** `typing.Optional[int]` — Number of results to return per page.
+    
 </dd>
 </dl>
 
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.organizations.<a href="src/label_studio_sdk/organizations/client.py">get</a>(...) -&gt; AsyncHttpResponse[LseOrganization]</code></summary>
 <dl>
 <dd>
 
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieve the settings for a specific organization by ID.
-</dd>
-</dl>
+**previous_state:** `typing.Optional[str]` — Filter previous_state by exact match (case-insensitive)
+    
 </dd>
 </dl>
 
-#### 🔌 Usage
-
 <dl>
 <dd>
 
-<dl>
-<dd>
-
-```python
-from label_studio_sdk import LabelStudio
-
-client = LabelStudio(
-    api_key="YOUR_API_KEY",
-)
-client.organizations.get(
-    id=1,
-)
-
-```
-</dd>
-</dl>
+**state:** `typing.Optional[str]` — Filter state by exact match (case-insensitive)
+    
 </dd>
 </dl>
 
-#### ⚙️ Parameters
+<dl>
+<dd>
+
+**transition_name:** `typing.Optional[str]` — Filter transition_name by exact match (case-insensitive)
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
 
-<dl>
-<dd>
-
-**id:** `int` 
+**triggered_by:** `typing.Optional[float]` — Filter triggered_by by exact match
     
 </dd>
 </dl>
@@ -4307,7 +5093,7 @@ client.organizations.get(
 </dl>
 </details>
 
-<details><summary><code>client.organizations.<a href="src/label_studio_sdk/organizations/client.py">update</a>(...) -&gt; AsyncHttpResponse[LseOrganization]</code></summary>
+<details><summary><code>client.states.<a href="src/label_studio_sdk/states/client.py">execute_transition</a>(...) -&gt; AsyncHttpResponse[FsmTransitionExecuteResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4325,7 +5111,7 @@ client.organizations.get(
             This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
         </p>
     </Card>
-Update organization details including title, embed domains, and Plugins settings.
+Execute a registered manual transition for an entity.
 </dd>
 </dl>
 </dd>
@@ -4345,8 +5131,10 @@ from label_studio_sdk import LabelStudio
 client = LabelStudio(
     api_key="YOUR_API_KEY",
 )
-client.organizations.update(
-    id=1,
+client.states.execute_transition(
+    entity_name="entity_name",
+    entity_id=1,
+    transition_name="transition_name",
 )
 
 ```
@@ -4363,7 +5151,7 @@ client.organizations.update(
 <dl>
 <dd>
 
-**id:** `int` 
+**entity_name:** `str` 
     
 </dd>
 </dl>
@@ -4371,7 +5159,7 @@ client.organizations.update(
 <dl>
 <dd>
 
-**contact_info:** `typing.Optional[str]` 
+**entity_id:** `int` 
     
 </dd>
 </dl>
@@ -4379,7 +5167,7 @@ client.organizations.update(
 <dl>
 <dd>
 
-**created_by:** `typing.Optional[int]` 
+**transition_name:** `str` 
     
 </dd>
 </dl>
@@ -4387,221 +5175,7 @@ client.organizations.update(
 <dl>
 <dd>
 
-**custom_scripts_enabled:** `typing.Optional[bool]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**email_notification_settings:** `typing.Optional[typing.Any]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**embed_domains:** `typing.Optional[typing.Sequence[typing.Dict[str, str]]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**embed_settings:** `typing.Optional[typing.Any]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**title:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**token:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.organizations.<a href="src/label_studio_sdk/organizations/client.py">update_default_role</a>(...) -&gt; AsyncHttpResponse[DefaultRole]</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-<Card href="https://humansignal.com/goenterprise">
-        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
-        <p style="margin-top: 10px; font-size: 14px;">
-            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
-        </p>
-    </Card>
-Update the default role for members of a specific organization.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from label_studio_sdk import LabelStudio
-
-client = LabelStudio(
-    api_key="YOUR_API_KEY",
-)
-client.organizations.update_default_role(
-    id=1,
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `int` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**annotator_reviewer_firewall_enabled_at:** `typing.Optional[dt.datetime]` — Set to current time to restrict data sharing between annotators and reviewers in the label stream, review stream, and notifications (which will be disabled). In these settings, information about annotator and reviewer identity is suppressed in the UI.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**custom_scripts_enabled_at:** `typing.Optional[dt.datetime]` — Set to current time to enable custom scripts (Plugins) for this organization. Can only be enabled if no organization members are active members of any other organizations; otherwise an error will be raised. If this occurs, contact the LEAP team for assistance with enabling custom scripts (Plugins).
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**default_role:** `typing.Optional[Role9E7Enum]` 
-
-Default membership role for invited users
-
-* `OW` - Owner
-* `AD` - Administrator
-* `MA` - Manager
-* `RE` - Reviewer
-* `AN` - Annotator
-* `DI` - Deactivated
-* `NO` - Not Activated
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**email_notification_settings:** `typing.Optional[typing.Any]` — Email notification settings for this organization. Controls which email notifications users can receive. Structure: {"notifications_allowed": {"notification_type": bool}}
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**embed_domains:** `typing.Optional[typing.Any]` — List of objects: {"domain": "example.com"}. Used for CSP header on /embed routes.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**embed_settings:** `typing.Optional[typing.Any]` — Embed settings for this organization
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**external_id:** `typing.Optional[str]` — External ID to uniquely identify this organization
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**extra_data_on_activity_logs:** `typing.Optional[bool]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**label_stream_navigation_disabled_at:** `typing.Optional[dt.datetime]` — Set to current time to disable the label stream navigation for this organization. This will prevent users from going back in the label stream to view previous labels.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**organization:** `typing.Optional[int]` — A unique integer value identifying this organization.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**read_only_quick_view_enabled_at:** `typing.Optional[dt.datetime]` — Set to current time to prevent creating or editing annotations in quick view.
+**transition_data:** `typing.Optional[typing.Dict[str, typing.Any]]` 
     
 </dd>
 </dl>
@@ -5061,6 +5635,521 @@ client.files.download(
 <dd>
 
 **filename:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Organizations
+<details><summary><code>client.organizations.<a href="src/label_studio_sdk/organizations/client.py">reset_token</a>() -&gt; AsyncHttpResponse[OrganizationInvite]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Reset the token used in the invitation link to invite someone to an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+client.organizations.reset_token()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.organizations.<a href="src/label_studio_sdk/organizations/client.py">list</a>(...) -&gt; AsyncHttpResponse[typing.List[OrganizationId]]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+
+        Return a list of the organizations you've created or that you have access to.
+        
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+client.organizations.list()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ordering:** `typing.Optional[str]` — Which field to use when ordering the results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.organizations.<a href="src/label_studio_sdk/organizations/client.py">get</a>(...) -&gt; AsyncHttpResponse[LseOrganization]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve the settings for a specific organization by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+client.organizations.get(
+    id=1,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.organizations.<a href="src/label_studio_sdk/organizations/client.py">update</a>(...) -&gt; AsyncHttpResponse[LseOrganization]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Card href="https://humansignal.com/goenterprise">
+        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+        <p style="margin-top: 10px; font-size: 14px;">
+            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+        </p>
+    </Card>
+Update organization details including title, embed domains, and Plugins settings.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+client.organizations.update(
+    id=1,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**contact_info:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_by:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**custom_scripts_enabled:** `typing.Optional[bool]` — Plugins
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**email_notification_settings:** `typing.Optional[typing.Any]` — Email Notification Settings
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**embed_domains:** `typing.Optional[typing.Sequence[typing.Dict[str, str]]]` — Supported domains
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**embed_settings:** `typing.Optional[typing.Any]` — Public Verification Key and Public Verification Algorithms configuration
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**title:** `typing.Optional[str]` — Organization name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**token:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.organizations.<a href="src/label_studio_sdk/organizations/client.py">update_default_role</a>(...) -&gt; AsyncHttpResponse[DefaultRole]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Card href="https://humansignal.com/goenterprise">
+        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+        <p style="margin-top: 10px; font-size: 14px;">
+            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+        </p>
+    </Card>
+Update the default role for members of a specific organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+client.organizations.update_default_role(
+    id=1,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**annotator_reviewer_firewall_enabled_at:** `typing.Optional[dt.datetime]` — Set to current time to restrict data sharing between annotators and reviewers in the label stream, review stream, and notifications (which will be disabled). In these settings, information about annotator and reviewer identity is suppressed in the UI.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**custom_scripts_enabled_at:** `typing.Optional[dt.datetime]` — Set to current time to enable custom scripts (Plugins) for this organization. Can only be enabled if no organization members are active members of any other organizations; otherwise an error will be raised. If this occurs, contact the LEAP team for assistance with enabling custom scripts (Plugins).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**default_role:** `typing.Optional[Role9E7Enum]` 
+
+Default membership role for invited users
+
+* `OW` - Owner
+* `AD` - Administrator
+* `MA` - Manager
+* `RE` - Reviewer
+* `AN` - Annotator
+* `DI` - Deactivated
+* `NO` - Not Activated
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**email_notification_settings:** `typing.Optional[typing.Any]` — Email notification settings for this organization. Controls which email notifications users can receive. Structure: {"notifications_allowed": {"notification_type": bool}}
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**embed_domains:** `typing.Optional[typing.Any]` — List of objects: {"domain": "example.com"}. Used for CSP header on /embed routes.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**embed_settings:** `typing.Optional[typing.Any]` — Embed settings for this organization
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**external_id:** `typing.Optional[str]` — External ID to uniquely identify this organization
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**extra_data_on_activity_logs:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**label_stream_navigation_disabled_at:** `typing.Optional[dt.datetime]` — Set to current time to disable the label stream navigation for this organization. This will prevent users from going back in the label stream to view previous labels.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**organization:** `typing.Optional[int]` — A unique integer value identifying this organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**read_only_quick_view_enabled_at:** `typing.Optional[dt.datetime]` — Set to current time to prevent creating or editing annotations in quick view.
     
 </dd>
 </dl>
@@ -8892,6 +9981,14 @@ for page in response.iter_pages():
 <dl>
 <dd>
 
+**archived:** `typing.Optional[bool]` — Filter by projects that belong to archived workspaces
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **filter:** `typing.Optional[str]` — Filter projects by pinned status. Use 'pinned_only' to return only pinned projects, 'exclude_pinned' to return only non-pinned projects, or 'all' to return all projects.
     
 </dd>
@@ -9056,7 +10153,7 @@ client.projects.create()
 <dl>
 <dd>
 
-**control_weights:** `typing.Optional[typing.Dict[str, typing.Any]]` — Dict of weights for each control tag in metric calculation.
+**control_weights:** `typing.Optional[typing.Dict[str, typing.Optional[ControlTagWeightRequest]]]` — Dict of weights for each control tag in metric calculation. Keys are control tag names from the labeling config. At least one tag must have a non-zero overall weight.
     
 </dd>
 </dl>
@@ -9072,7 +10169,7 @@ client.projects.create()
 <dl>
 <dd>
 
-**description:** `typing.Optional[str]` — Project description
+**description:** `typing.Optional[str]` — Project Description
     
 </dd>
 </dl>
@@ -9264,7 +10361,7 @@ client.projects.create()
 <dl>
 <dd>
 
-**title:** `typing.Optional[str]` — Project name. Must be between 3 and 50 characters long.
+**title:** `typing.Optional[str]` — Project Title
     
 </dd>
 </dl>
@@ -9272,7 +10369,7 @@ client.projects.create()
 <dl>
 <dd>
 
-**workspace:** `typing.Optional[int]` 
+**workspace:** `typing.Optional[int]` — In Workspace
     
 </dd>
 </dl>
@@ -9336,6 +10433,14 @@ client.projects.list_counts()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**archived:** `typing.Optional[bool]` — Filter by projects that belong to archived workspaces
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -9647,6 +10752,11 @@ client.projects.update(
 <dd>
 
 **agreement_methodology:** `typing.Optional[AgreementMethodologyEnum]` 
+
+Methodology (Consensus / Pairwise Averaging)
+
+* `consensus` - Consensus
+* `pairwise` - Pairwise Averaging
     
 </dd>
 </dl>
@@ -9654,7 +10764,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**agreement_threshold:** `typing.Optional[str]` — Minimum percent agreement threshold for which minimum number of annotators must agree
+**agreement_threshold:** `typing.Optional[str]` — Agreement threshold
     
 </dd>
 </dl>
@@ -9662,7 +10772,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**annotation_limit_count:** `typing.Optional[int]` 
+**annotation_limit_count:** `typing.Optional[int]` — Limit by number of tasks
     
 </dd>
 </dl>
@@ -9670,7 +10780,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**annotation_limit_percent:** `typing.Optional[str]` 
+**annotation_limit_percent:** `typing.Optional[str]` — Limit by percentage of tasks
     
 </dd>
 </dl>
@@ -9678,7 +10788,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**annotator_evaluation_continuous_tasks:** `typing.Optional[int]` 
+**annotator_evaluation_continuous_tasks:** `typing.Optional[int]` — Continuous Evaluation: Required tasks
     
 </dd>
 </dl>
@@ -9686,7 +10796,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**annotator_evaluation_enabled:** `typing.Optional[bool]` — Enable annotator evaluation for the project
+**annotator_evaluation_enabled:** `typing.Optional[bool]` — Evaluate all annotators against ground truth
     
 </dd>
 </dl>
@@ -9694,7 +10804,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**annotator_evaluation_minimum_score:** `typing.Optional[str]` 
+**annotator_evaluation_minimum_score:** `typing.Optional[str]` — Score required to pass evaluation
     
 </dd>
 </dl>
@@ -9702,7 +10812,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**annotator_evaluation_minimum_tasks:** `typing.Optional[int]` 
+**annotator_evaluation_minimum_tasks:** `typing.Optional[int]` — Number of tasks for evaluation
     
 </dd>
 </dl>
@@ -9710,7 +10820,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**annotator_evaluation_onboarding_tasks:** `typing.Optional[int]` 
+**annotator_evaluation_onboarding_tasks:** `typing.Optional[int]` — Onboarding Evaluation: Required tasks
     
 </dd>
 </dl>
@@ -9726,7 +10836,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**color:** `typing.Optional[str]` 
+**color:** `typing.Optional[str]` — Color
     
 </dd>
 </dl>
@@ -9742,7 +10852,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**control_weights:** `typing.Optional[typing.Dict[str, typing.Any]]` — Dict of weights for each control tag in metric calculation.
+**control_weights:** `typing.Optional[typing.Dict[str, typing.Optional[ControlTagWeightRequest]]]` — Dict of weights for each control tag in metric calculation. Keys are control tag names from the labeling config. At least one tag must have a non-zero overall weight.
     
 </dd>
 </dl>
@@ -9758,7 +10868,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**custom_script:** `typing.Optional[str]` 
+**custom_script:** `typing.Optional[str]` — Plugins
     
 </dd>
 </dl>
@@ -9766,7 +10876,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**custom_task_lock_ttl:** `typing.Optional[int]` — TTL in seconds for task reservations, on new and existing tasks
+**custom_task_lock_ttl:** `typing.Optional[int]` — Task reservation time. TTL in seconds (UI displays and edits this value in minutes).
     
 </dd>
 </dl>
@@ -9774,7 +10884,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**description:** `typing.Optional[str]` — Project description
+**description:** `typing.Optional[str]` — Description
     
 </dd>
 </dl>
@@ -9782,7 +10892,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**enable_empty_annotation:** `typing.Optional[bool]` — Allow annotators to submit empty annotations
+**enable_empty_annotation:** `typing.Optional[bool]` — Allow empty annotations
     
 </dd>
 </dl>
@@ -9798,7 +10908,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**expert_instruction:** `typing.Optional[str]` — Labeling instructions in HTML format
+**expert_instruction:** `typing.Optional[str]` — Instructions
     
 </dd>
 </dl>
@@ -9822,7 +10932,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**label_config:** `typing.Optional[str]` — Label config in XML format. See more about it in documentation
+**label_config:** `typing.Optional[str]` — Labeling Configuration
     
 </dd>
 </dl>
@@ -9830,7 +10940,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**max_additional_annotators_assignable:** `typing.Optional[int]` — Maximum number of additional annotators that can be assigned to a low agreement task
+**max_additional_annotators_assignable:** `typing.Optional[int]` — Maximum additional annotators
     
 </dd>
 </dl>
@@ -9838,7 +10948,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**maximum_annotations:** `typing.Optional[int]` — Maximum number of annotations for one task. If the number of annotations per task is equal or greater to this value, the task is completed (is_labeled=True)
+**maximum_annotations:** `typing.Optional[int]` — Annotations per task
     
 </dd>
 </dl>
@@ -9870,7 +10980,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**overlap_cohort_percentage:** `typing.Optional[int]` 
+**overlap_cohort_percentage:** `typing.Optional[int]` — Annotations per task coverage
     
 </dd>
 </dl>
@@ -9878,7 +10988,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**pause_on_failed_annotator_evaluation:** `typing.Optional[bool]` 
+**pause_on_failed_annotator_evaluation:** `typing.Optional[bool]` — Pause annotator on failed evaluation
     
 </dd>
 </dl>
@@ -9894,7 +11004,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**require_comment_on_skip:** `typing.Optional[bool]` 
+**require_comment_on_skip:** `typing.Optional[bool]` — Require comment to skip
     
 </dd>
 </dl>
@@ -9926,7 +11036,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**show_annotation_history:** `typing.Optional[bool]` — Show annotation history to annotator
+**show_annotation_history:** `typing.Optional[bool]` — Show Data Manager to Annotators
     
 </dd>
 </dl>
@@ -9934,7 +11044,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**show_collab_predictions:** `typing.Optional[bool]` — If set, the annotator can view model predictions
+**show_collab_predictions:** `typing.Optional[bool]` — Use predictions to pre-label Tasks
     
 </dd>
 </dl>
@@ -9950,7 +11060,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**show_instruction:** `typing.Optional[bool]` — Show instructions to the annotator before they start
+**show_instruction:** `typing.Optional[bool]` — Show instructions before labeling
     
 </dd>
 </dl>
@@ -9958,7 +11068,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**show_overlap_first:** `typing.Optional[bool]` 
+**show_overlap_first:** `typing.Optional[bool]` — Show tasks with overlap first
     
 </dd>
 </dl>
@@ -9966,7 +11076,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**show_skip_button:** `typing.Optional[bool]` — Show a skip button in interface and allow annotators to skip the task
+**show_skip_button:** `typing.Optional[bool]` — Allow skipping tasks
     
 </dd>
 </dl>
@@ -9974,7 +11084,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**show_unused_data_columns_to_annotators:** `typing.Optional[bool]` 
+**show_unused_data_columns_to_annotators:** `typing.Optional[bool]` — Show only columns used in labeling configuration to Annotators. API uses inverse field semantics here: set false to show only used columns, set true to show all task.data columns.
     
 </dd>
 </dl>
@@ -9990,7 +11100,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**strict_task_overlap:** `typing.Optional[bool]` 
+**strict_task_overlap:** `typing.Optional[bool]` — Enforce strict overlap limit
     
 </dd>
 </dl>
@@ -9998,7 +11108,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**task_data_login:** `typing.Optional[str]` — Task data credentials: login
+**task_data_login:** `typing.Optional[str]` — Login
     
 </dd>
 </dl>
@@ -10006,7 +11116,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**task_data_password:** `typing.Optional[str]` — Task data credentials: password
+**task_data_password:** `typing.Optional[str]` — Password
     
 </dd>
 </dl>
@@ -10014,7 +11124,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**title:** `typing.Optional[str]` — Project name. Must be between 3 and 50 characters long.
+**title:** `typing.Optional[str]` — Project Name
     
 </dd>
 </dl>
@@ -10022,7 +11132,7 @@ client.projects.update(
 <dl>
 <dd>
 
-**workspace:** `typing.Optional[int]` 
+**workspace:** `typing.Optional[int]` — Workspace
     
 </dd>
 </dl>
@@ -10181,7 +11291,7 @@ client.projects.duplicate(
 
 **mode:** `ModeEnum` 
 
-Data that you want to duplicate: settings only, with tasks, with annotations
+What to Duplicate (Project configuration only / Project configuration and tasks)
 
 * `settings` - Only settings
 * `settings,data` - Settings and tasks
@@ -10192,7 +11302,7 @@ Data that you want to duplicate: settings only, with tasks, with annotations
 <dl>
 <dd>
 
-**title:** `str` — Title of duplicated project
+**title:** `str` — Project Name
     
 </dd>
 </dl>
@@ -10200,7 +11310,7 @@ Data that you want to duplicate: settings only, with tasks, with annotations
 <dl>
 <dd>
 
-**workspace:** `int` — Workspace, where to place duplicated project
+**workspace:** `int` — Destination Workspace
     
 </dd>
 </dl>
@@ -10208,7 +11318,7 @@ Data that you want to duplicate: settings only, with tasks, with annotations
 <dl>
 <dd>
 
-**description:** `typing.Optional[str]` — Description of duplicated project
+**description:** `typing.Optional[str]` — Project Description
     
 </dd>
 </dl>
@@ -12826,6 +13936,14 @@ client.workspaces.list()
 <dl>
 <dd>
 
+**is_archived:** `typing.Optional[bool]` — Filter by archived status. Set to false to exclude archived workspaces.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **is_personal:** `typing.Optional[bool]` — Workspace is a personal user workspace.
     
 </dd>
@@ -12910,7 +14028,7 @@ client.workspaces.create(
 <dl>
 <dd>
 
-**title:** `str` — Workspace name
+**title:** `str` — Workspace Name
     
 </dd>
 </dl>
@@ -12918,7 +14036,7 @@ client.workspaces.create(
 <dl>
 <dd>
 
-**color:** `typing.Optional[str]` 
+**color:** `typing.Optional[str]` — Color
     
 </dd>
 </dl>
@@ -13178,7 +14296,7 @@ client.workspaces.update(
 <dl>
 <dd>
 
-**color:** `typing.Optional[str]` 
+**color:** `typing.Optional[str]` — Color
     
 </dd>
 </dl>
@@ -13210,7 +14328,7 @@ client.workspaces.update(
 <dl>
 <dd>
 
-**title:** `typing.Optional[str]` — Workspace name
+**title:** `typing.Optional[str]` — Workspace Name
     
 </dd>
 </dl>
@@ -29337,7 +30455,7 @@ client.organizations.invites.revoke_invite(
 <dl>
 <dd>
 
-**email:** `str` 
+**email:** `str` — Email address
     
 </dd>
 </dl>
@@ -29414,7 +30532,7 @@ client.organizations.invites.send_email(
 <dl>
 <dd>
 
-**emails:** `typing.Sequence[str]` 
+**emails:** `typing.Sequence[str]` — Email addresses
     
 </dd>
 </dl>
@@ -29423,6 +30541,16 @@ client.organizations.invites.send_email(
 <dd>
 
 **role:** `Role9E7Enum` 
+
+Organization role
+
+* `OW` - Owner
+* `AD` - Administrator
+* `MA` - Manager
+* `RE` - Reviewer
+* `AN` - Annotator
+* `DI` - Deactivated
+* `NO` - Not Activated
     
 </dd>
 </dl>
@@ -29430,7 +30558,7 @@ client.organizations.invites.send_email(
 <dl>
 <dd>
 
-**projects:** `typing.Optional[typing.Sequence[int]]` 
+**projects:** `typing.Optional[typing.Sequence[int]]` — Project IDs to grant access to
     
 </dd>
 </dl>
@@ -29438,7 +30566,7 @@ client.organizations.invites.send_email(
 <dl>
 <dd>
 
-**workspaces:** `typing.Optional[typing.Sequence[int]]` 
+**workspaces:** `typing.Optional[typing.Sequence[int]]` — Workspace IDs to grant access to
     
 </dd>
 </dl>
@@ -29632,7 +30760,7 @@ client.organizations.member_tags.create(
 <dl>
 <dd>
 
-**label:** `str` 
+**label:** `str` — Label
     
 </dd>
 </dl>
@@ -29749,7 +30877,7 @@ client.organizations.member_tags.assign(
 <dl>
 <dd>
 
-**role:** `typing.Optional[str]` — Filter role by in list (comma-separated values)
+**role:** `typing.Optional[str]` — Multiple values may be separated by commas. (comma-separated values)
     
 </dd>
 </dl>
@@ -29757,7 +30885,7 @@ client.organizations.member_tags.assign(
 <dl>
 <dd>
 
-**tags:** `typing.Optional[str]` — Filter tags by in list (comma-separated values)
+**tags:** `typing.Optional[str]` — Multiple values may be separated by commas. (comma-separated values)
     
 </dd>
 </dl>
@@ -30256,7 +31384,7 @@ client.organizations.member_tags.update(
 <dl>
 <dd>
 
-**label:** `typing.Optional[str]` 
+**label:** `typing.Optional[str]` — Label
     
 </dd>
 </dl>
@@ -30518,6 +31646,16 @@ client.organizations.members.update(
 <dd>
 
 **role:** `typing.Optional[Role9E7Enum]` 
+
+Organization role
+
+* `OW` - Owner
+* `AD` - Administrator
+* `MA` - Manager
+* `RE` - Reviewer
+* `AN` - Annotator
+* `DI` - Deactivated
+* `NO` - Not Activated
     
 </dd>
 </dl>
@@ -30525,7 +31663,7 @@ client.organizations.members.update(
 <dl>
 <dd>
 
-**user_id:** `typing.Optional[int]` 
+**user_id:** `typing.Optional[int]` — Member
     
 </dd>
 </dl>
@@ -30869,7 +32007,7 @@ client.organizations.permissions.create(
 <dl>
 <dd>
 
-**roles:** `typing.Optional[typing.Sequence[Role9E7Enum]]` — Explicit roles that have this permission within the organization.
+**roles:** `typing.Optional[typing.Sequence[Role9E7Enum]]` — Organization roles
     
 </dd>
 </dl>
@@ -31140,7 +32278,7 @@ client.organizations.permissions.replace(
 <dl>
 <dd>
 
-**roles:** `typing.Optional[typing.Sequence[Role9E7Enum]]` — Explicit roles that have this permission within the organization.
+**roles:** `typing.Optional[typing.Sequence[Role9E7Enum]]` — Organization roles
     
 </dd>
 </dl>
@@ -31326,7 +32464,7 @@ client.organizations.permissions.update(
 <dl>
 <dd>
 
-**roles:** `typing.Optional[typing.Sequence[Role9E7Enum]]` — Explicit roles that have this permission within the organization.
+**roles:** `typing.Optional[typing.Sequence[Role9E7Enum]]` — Organization roles
     
 </dd>
 </dl>
@@ -32708,7 +33846,7 @@ client.projects.metrics.update(
 <dl>
 <dd>
 
-**additional_params:** `typing.Optional[typing.Dict[str, typing.Any]]` 
+**additional_params:** `typing.Optional[typing.Dict[str, typing.Any]]` — Agreement metric parameters
     
 </dd>
 </dl>
@@ -32732,7 +33870,7 @@ client.projects.metrics.update(
 <dl>
 <dd>
 
-**metric_name:** `typing.Optional[str]` 
+**metric_name:** `typing.Optional[str]` — Agreement metric
     
 </dd>
 </dl>
@@ -33536,6 +34674,182 @@ client.projects.stats.finished_tasks(
 <dd>
 
 **user_pk:** `typing.Optional[int]` — User ID to filter statistics by (optional)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.projects.stats.<a href="src/label_studio_sdk/projects/stats/client.py">label_distribution_counts</a>(...) -&gt; AsyncHttpResponse[LabelDistributionCountsResponse]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Card href="https://humansignal.com/goenterprise">
+        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+        <p style="margin-top: 10px; font-size: 14px;">
+            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+        </p>
+    </Card>
+Returns counts and percentages for requested label choices, from both annotations and predictions. Supports either pagination (`limit`, `offset`) or targeted fetches via explicit `choice_keys`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+client.projects.stats.label_distribution_counts(
+    id=1,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**choice_keys:** `typing.Optional[str]` — Explicit choice keys to fetch, joined by "___PIPE___" (for example: "label___SEP___pos___PIPE___quality___SEP___4"). When provided, pagination params are ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Maximum number of choice keys to return for pagination. Ignored when `choice_keys` is provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Zero-based offset into the structure `choice_keys` list. Used only when `choice_keys` is not provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.projects.stats.<a href="src/label_studio_sdk/projects/stats/client.py">label_distribution_structure</a>(...) -&gt; AsyncHttpResponse[LabelDistributionStructureResponse]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Card href="https://humansignal.com/goenterprise">
+        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+        <p style="margin-top: 10px; font-size: 14px;">
+            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+        </p>
+    </Card>
+Returns dimensions and flattened `choice_keys` for a project. Use this response to drive paginated or targeted calls to the label distribution counts endpoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+client.projects.stats.label_distribution_structure(
+    id=1,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `int` 
     
 </dd>
 </dl>
@@ -35359,7 +36673,7 @@ client.projects.members.bulk.post(
 <dl>
 <dd>
 
-**all_:** `bool` 
+**all_:** `bool` — Apply to all project members
     
 </dd>
 </dl>
@@ -35399,7 +36713,7 @@ client.projects.members.bulk.post(
 <dl>
 <dd>
 
-**tags:** `typing.Optional[str]` — Filter tags by in list (comma-separated values)
+**tags:** `typing.Optional[str]` — Multiple values may be separated by commas. (comma-separated values)
     
 </dd>
 </dl>
@@ -35407,7 +36721,7 @@ client.projects.members.bulk.post(
 <dl>
 <dd>
 
-**excluded:** `typing.Optional[typing.Sequence[int]]` 
+**excluded:** `typing.Optional[typing.Sequence[int]]` — Excluded user IDs
     
 </dd>
 </dl>
@@ -35415,7 +36729,7 @@ client.projects.members.bulk.post(
 <dl>
 <dd>
 
-**included:** `typing.Optional[typing.Sequence[int]]` 
+**included:** `typing.Optional[typing.Sequence[int]]` — Included user IDs
     
 </dd>
 </dl>
@@ -35423,7 +36737,7 @@ client.projects.members.bulk.post(
 <dl>
 <dd>
 
-**roles:** `typing.Optional[typing.Sequence[ProjectMemberBulkAssignRolesRequest]]` 
+**roles:** `typing.Optional[typing.Sequence[ProjectMemberBulkAssignRolesRequest]]` — Member roles
     
 </dd>
 </dl>
@@ -35539,7 +36853,7 @@ client.projects.members.bulk.delete(
 <dl>
 <dd>
 
-**tags:** `typing.Optional[str]` — Filter tags by in list (comma-separated values)
+**tags:** `typing.Optional[str]` — Multiple values may be separated by commas. (comma-separated values)
     
 </dd>
 </dl>
@@ -37733,6 +39047,14 @@ client.sso.saml.update(
 <dl>
 <dd>
 
+**idp_provider:** `typing.Optional[str]` — Identity Provider preset key (e.g. okta, azure, google, custom)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **mapping_email:** `typing.Optional[str]` — Mapping attributes: user email from SAML request
     
 </dd>
@@ -37781,7 +39103,7 @@ client.sso.saml.update(
 <dl>
 <dd>
 
-**projects_groups:** `typing.Optional[typing.Sequence[ProjectGroupRequest]]` 
+**projects_groups:** `typing.Optional[typing.Sequence[ProjectGroupRequest]]` — Projects to Groups Mapping. List of objects with project_id, group, role.
     
 </dd>
 </dl>
@@ -37789,7 +39111,7 @@ client.sso.saml.update(
 <dl>
 <dd>
 
-**roles_groups:** `typing.Optional[typing.Sequence[typing.Sequence[str]]]` 
+**roles_groups:** `typing.Optional[typing.Sequence[typing.Sequence[str]]]` — Organization Roles to Groups Mapping. List of [role_name, group_name] pairs.
     
 </dd>
 </dl>
@@ -37797,10 +39119,76 @@ client.sso.saml.update(
 <dl>
 <dd>
 
-**workspaces_groups:** `typing.Optional[typing.Sequence[typing.Sequence[str]]]` 
+**workspaces_groups:** `typing.Optional[typing.Sequence[typing.Sequence[str]]]` — Workspaces to Groups Mapping. List of [workspace_title, group_name] pairs.
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.sso.saml.<a href="src/label_studio_sdk/sso/saml/client.py">reset</a>() -&gt; AsyncHttpResponse[None]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Card href="https://humansignal.com/goenterprise">
+        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+        <p style="margin-top: 10px; font-size: 14px;">
+            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+        </p>
+    </Card>
+Reset SAML2 settings for the currently active organization. This clears all configured fields (domain, metadata, attribute mappings, group mappings) back to their defaults without deleting the underlying settings record.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+client.sso.saml.reset()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
 
 <dl>
 <dd>
@@ -37948,7 +39336,7 @@ client.sso.scim.update(
 <dl>
 <dd>
 
-**projects_groups:** `typing.Optional[typing.Sequence[ProjectGroupRequest]]` 
+**projects_groups:** `typing.Optional[typing.Sequence[ProjectGroupRequest]]` — Projects to Groups Mapping. List of objects with project_id, group, role.
     
 </dd>
 </dl>
@@ -37956,7 +39344,7 @@ client.sso.scim.update(
 <dl>
 <dd>
 
-**roles_groups:** `typing.Optional[typing.Sequence[typing.Sequence[str]]]` 
+**roles_groups:** `typing.Optional[typing.Sequence[typing.Sequence[str]]]` — Organization Roles to Groups Mapping. List of [role_name, group_name] pairs.
     
 </dd>
 </dl>
@@ -37964,7 +39352,110 @@ client.sso.scim.update(
 <dl>
 <dd>
 
-**workspaces_groups:** `typing.Optional[typing.Sequence[typing.Sequence[str]]]` 
+**workspaces_groups:** `typing.Optional[typing.Sequence[typing.Sequence[str]]]` — Workspaces to Groups Mapping. List of [workspace_title, group_name] pairs.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Tasks AgreementMatrix
+<details><summary><code>client.tasks.agreement_matrix.<a href="src/label_studio_sdk/tasks/agreement_matrix/client.py">get</a>(...) -&gt; AsyncHttpResponse[TaskAgreementMatrixResponse]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Card href="https://humansignal.com/goenterprise">
+        <img style="pointer-events: none; margin-left: 0px; margin-right: 0px;" src="https://docs.humansignal.com/images/badge.svg" alt="Label Studio Enterprise badge"/>
+        <p style="margin-top: 10px; font-size: 14px;">
+            This endpoint is not available in Label Studio Community Edition. [Learn more about Label Studio Enterprise](https://humansignal.com/goenterprise)
+        </p>
+    </Card>
+Returns a pairwise agreement matrix between selected participants for a single task, averaged across all active dimensions or a single specified dimension.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from label_studio_sdk import AgreementSelectionRequest, LabelStudio
+
+client = LabelStudio(
+    api_key="YOUR_API_KEY",
+)
+client.tasks.agreement_matrix.get(
+    project_pk=1,
+    task_pk=1,
+    selection=AgreementSelectionRequest(),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**project_pk:** `int` — Project ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**task_pk:** `int` — Task ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**selection:** `AgreementSelectionRequest` — JSON object specifying which participants to include in the agreement matrix
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**dimension:** `typing.Optional[int]` — Dimension ID to compute agreement for. If not provided, averages across all active dimensions.
     
 </dd>
 </dl>
@@ -38372,7 +39863,7 @@ client.workspaces.projects.add(
 <dl>
 <dd>
 
-**project:** `int` 
+**project:** `int` — Project ID
     
 </dd>
 </dl>
@@ -38534,7 +40025,7 @@ client.workspaces.members.bulk.post(
 <dl>
 <dd>
 
-**all_:** `bool` 
+**all_:** `bool` — Apply to all workspace members
     
 </dd>
 </dl>
@@ -38542,7 +40033,7 @@ client.workspaces.members.bulk.post(
 <dl>
 <dd>
 
-**excluded:** `typing.Optional[typing.Sequence[int]]` 
+**excluded:** `typing.Optional[typing.Sequence[int]]` — Excluded user IDs
     
 </dd>
 </dl>
@@ -38550,7 +40041,7 @@ client.workspaces.members.bulk.post(
 <dl>
 <dd>
 
-**included:** `typing.Optional[typing.Sequence[int]]` 
+**included:** `typing.Optional[typing.Sequence[int]]` — Included user IDs
     
 </dd>
 </dl>

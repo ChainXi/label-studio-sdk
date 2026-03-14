@@ -16,6 +16,7 @@ from ..errors.bad_request_error import BadRequestError
 from ..types.agreement_methodology_enum import AgreementMethodologyEnum
 from ..types.all_roles_project_list import AllRolesProjectList
 from ..types.assignment_settings_request import AssignmentSettingsRequest
+from ..types.control_tag_weight_request import ControlTagWeightRequest
 from ..types.import_api_request import ImportApiRequest
 from ..types.lse_project_create import LseProjectCreate
 from ..types.lse_project_response import LseProjectResponse
@@ -45,6 +46,7 @@ class RawProjectsClient:
     def list(
         self,
         *,
+        archived: typing.Optional[bool] = None,
         filter: typing.Optional[str] = None,
         ids: typing.Optional[str] = None,
         include: typing.Optional[str] = None,
@@ -63,6 +65,9 @@ class RawProjectsClient:
 
         Parameters
         ----------
+        archived : typing.Optional[bool]
+            Filter by projects that belong to archived workspaces
+
         filter : typing.Optional[str]
             Filter projects by pinned status. Use 'pinned_only' to return only pinned projects, 'exclude_pinned' to return only non-pinned projects, or 'all' to return all projects.
 
@@ -110,6 +115,7 @@ class RawProjectsClient:
             "api/projects/",
             method="GET",
             params={
+                "archived": archived,
                 "filter": filter,
                 "ids": ids,
                 "include": include,
@@ -136,6 +142,7 @@ class RawProjectsClient:
                 _items = _parsed_response.results
                 _has_next = True
                 _get_next = lambda: self.list(
+                    archived=archived,
                     filter=filter,
                     ids=ids,
                     include=include,
@@ -160,7 +167,7 @@ class RawProjectsClient:
         *,
         annotator_evaluation_enabled: typing.Optional[bool] = OMIT,
         color: typing.Optional[str] = OMIT,
-        control_weights: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        control_weights: typing.Optional[typing.Dict[str, typing.Optional[ControlTagWeightRequest]]] = OMIT,
         created_by: typing.Optional[UserSimpleRequest] = OMIT,
         description: typing.Optional[str] = OMIT,
         enable_empty_annotation: typing.Optional[bool] = OMIT,
@@ -200,14 +207,14 @@ class RawProjectsClient:
 
         color : typing.Optional[str]
 
-        control_weights : typing.Optional[typing.Dict[str, typing.Any]]
-            Dict of weights for each control tag in metric calculation.
+        control_weights : typing.Optional[typing.Dict[str, typing.Optional[ControlTagWeightRequest]]]
+            Dict of weights for each control tag in metric calculation. Keys are control tag names from the labeling config. At least one tag must have a non-zero overall weight.
 
         created_by : typing.Optional[UserSimpleRequest]
             Project owner
 
         description : typing.Optional[str]
-            Project description
+            Project Description
 
         enable_empty_annotation : typing.Optional[bool]
             Allow annotators to submit empty annotations
@@ -274,9 +281,10 @@ class RawProjectsClient:
             Task data credentials: password
 
         title : typing.Optional[str]
-            Project name. Must be between 3 and 50 characters long.
+            Project Title
 
         workspace : typing.Optional[int]
+            In Workspace
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -292,7 +300,11 @@ class RawProjectsClient:
             json={
                 "annotator_evaluation_enabled": annotator_evaluation_enabled,
                 "color": color,
-                "control_weights": control_weights,
+                "control_weights": convert_and_respect_annotation_metadata(
+                    object_=control_weights,
+                    annotation=typing.Optional[typing.Dict[str, typing.Optional[ControlTagWeightRequest]]],
+                    direction="write",
+                ),
                 "created_by": convert_and_respect_annotation_metadata(
                     object_=created_by, annotation=UserSimpleRequest, direction="write"
                 ),
@@ -347,6 +359,7 @@ class RawProjectsClient:
     def list_counts(
         self,
         *,
+        archived: typing.Optional[bool] = None,
         filter: typing.Optional[str] = None,
         ids: typing.Optional[str] = None,
         include: typing.Optional[str] = None,
@@ -364,6 +377,9 @@ class RawProjectsClient:
 
         Parameters
         ----------
+        archived : typing.Optional[bool]
+            Filter by projects that belong to archived workspaces
+
         filter : typing.Optional[str]
             Filter projects by pinned status. Use 'pinned_only' to return only pinned projects, 'exclude_pinned' to return only non-pinned projects, or 'all' to return all projects.
 
@@ -406,6 +422,7 @@ class RawProjectsClient:
             "api/projects/counts/",
             method="GET",
             params={
+                "archived": archived,
                 "filter": filter,
                 "ids": ids,
                 "include": include,
@@ -527,7 +544,7 @@ class RawProjectsClient:
         assignment_settings: typing.Optional[AssignmentSettingsRequest] = OMIT,
         color: typing.Optional[str] = OMIT,
         comment_classification_config: typing.Optional[str] = OMIT,
-        control_weights: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        control_weights: typing.Optional[typing.Dict[str, typing.Optional[ControlTagWeightRequest]]] = OMIT,
         created_by: typing.Optional[UserSimpleRequest] = OMIT,
         custom_script: typing.Optional[str] = OMIT,
         custom_task_lock_ttl: typing.Optional[int] = OMIT,
@@ -576,53 +593,65 @@ class RawProjectsClient:
             Maximum number of members to return
 
         agreement_methodology : typing.Optional[AgreementMethodologyEnum]
+            Methodology (Consensus / Pairwise Averaging)
+
+            * `consensus` - Consensus
+            * `pairwise` - Pairwise Averaging
 
         agreement_threshold : typing.Optional[str]
-            Minimum percent agreement threshold for which minimum number of annotators must agree
+            Agreement threshold
 
         annotation_limit_count : typing.Optional[int]
+            Limit by number of tasks
 
         annotation_limit_percent : typing.Optional[str]
+            Limit by percentage of tasks
 
         annotator_evaluation_continuous_tasks : typing.Optional[int]
+            Continuous Evaluation: Required tasks
 
         annotator_evaluation_enabled : typing.Optional[bool]
-            Enable annotator evaluation for the project
+            Evaluate all annotators against ground truth
 
         annotator_evaluation_minimum_score : typing.Optional[str]
+            Score required to pass evaluation
 
         annotator_evaluation_minimum_tasks : typing.Optional[int]
+            Number of tasks for evaluation
 
         annotator_evaluation_onboarding_tasks : typing.Optional[int]
+            Onboarding Evaluation: Required tasks
 
         assignment_settings : typing.Optional[AssignmentSettingsRequest]
 
         color : typing.Optional[str]
+            Color
 
         comment_classification_config : typing.Optional[str]
 
-        control_weights : typing.Optional[typing.Dict[str, typing.Any]]
-            Dict of weights for each control tag in metric calculation.
+        control_weights : typing.Optional[typing.Dict[str, typing.Optional[ControlTagWeightRequest]]]
+            Dict of weights for each control tag in metric calculation. Keys are control tag names from the labeling config. At least one tag must have a non-zero overall weight.
 
         created_by : typing.Optional[UserSimpleRequest]
             Project owner
 
         custom_script : typing.Optional[str]
+            Plugins
 
         custom_task_lock_ttl : typing.Optional[int]
-            TTL in seconds for task reservations, on new and existing tasks
+            Task reservation time. TTL in seconds (UI displays and edits this value in minutes).
 
         description : typing.Optional[str]
-            Project description
+            Description
 
         enable_empty_annotation : typing.Optional[bool]
-            Allow annotators to submit empty annotations
+            Allow empty annotations
 
         evaluate_predictions_automatically : typing.Optional[bool]
             Retrieve and display predictions when loading a task
 
         expert_instruction : typing.Optional[str]
-            Labeling instructions in HTML format
+            Instructions
 
         is_draft : typing.Optional[bool]
             Whether or not the project is in the middle of being created
@@ -631,13 +660,13 @@ class RawProjectsClient:
             Whether or not the project is published to annotators
 
         label_config : typing.Optional[str]
-            Label config in XML format. See more about it in documentation
+            Labeling Configuration
 
         max_additional_annotators_assignable : typing.Optional[int]
-            Maximum number of additional annotators that can be assigned to a low agreement task
+            Maximum additional annotators
 
         maximum_annotations : typing.Optional[int]
-            Maximum number of annotations for one task. If the number of annotations per task is equal or greater to this value, the task is completed (is_labeled=True)
+            Annotations per task
 
         min_annotations_to_start_training : typing.Optional[int]
             Minimum number of completed tasks after which model training is started
@@ -648,13 +677,16 @@ class RawProjectsClient:
         organization : typing.Optional[int]
 
         overlap_cohort_percentage : typing.Optional[int]
+            Annotations per task coverage
 
         pause_on_failed_annotator_evaluation : typing.Optional[bool]
+            Pause annotator on failed evaluation
 
         pinned_at : typing.Optional[dt.datetime]
             Pinned date and time
 
         require_comment_on_skip : typing.Optional[bool]
+            Require comment to skip
 
         reveal_preannotations_interactively : typing.Optional[bool]
             Reveal pre-annotations interactively
@@ -664,38 +696,42 @@ class RawProjectsClient:
         sampling : typing.Optional[SamplingDe5Enum]
 
         show_annotation_history : typing.Optional[bool]
-            Show annotation history to annotator
+            Show Data Manager to Annotators
 
         show_collab_predictions : typing.Optional[bool]
-            If set, the annotator can view model predictions
+            Use predictions to pre-label Tasks
 
         show_ground_truth_first : typing.Optional[bool]
             Onboarding mode (true): show ground truth tasks first in the labeling stream
 
         show_instruction : typing.Optional[bool]
-            Show instructions to the annotator before they start
+            Show instructions before labeling
 
         show_overlap_first : typing.Optional[bool]
+            Show tasks with overlap first
 
         show_skip_button : typing.Optional[bool]
-            Show a skip button in interface and allow annotators to skip the task
+            Allow skipping tasks
 
         show_unused_data_columns_to_annotators : typing.Optional[bool]
+            Show only columns used in labeling configuration to Annotators. API uses inverse field semantics here: set false to show only used columns, set true to show all task.data columns.
 
         skip_queue : typing.Optional[SkipQueueEnum]
 
         strict_task_overlap : typing.Optional[bool]
+            Enforce strict overlap limit
 
         task_data_login : typing.Optional[str]
-            Task data credentials: login
+            Login
 
         task_data_password : typing.Optional[str]
-            Task data credentials: password
+            Password
 
         title : typing.Optional[str]
-            Project name. Must be between 3 and 50 characters long.
+            Project Name
 
         workspace : typing.Optional[int]
+            Workspace
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -726,7 +762,11 @@ class RawProjectsClient:
                 ),
                 "color": color,
                 "comment_classification_config": comment_classification_config,
-                "control_weights": control_weights,
+                "control_weights": convert_and_respect_annotation_metadata(
+                    object_=control_weights,
+                    annotation=typing.Optional[typing.Dict[str, typing.Optional[ControlTagWeightRequest]]],
+                    direction="write",
+                ),
                 "created_by": convert_and_respect_annotation_metadata(
                     object_=created_by, annotation=UserSimpleRequest, direction="write"
                 ),
@@ -850,19 +890,19 @@ class RawProjectsClient:
         id : int
 
         mode : ModeEnum
-            Data that you want to duplicate: settings only, with tasks, with annotations
+            What to Duplicate (Project configuration only / Project configuration and tasks)
 
             * `settings` - Only settings
             * `settings,data` - Settings and tasks
 
         title : str
-            Title of duplicated project
+            Project Name
 
         workspace : int
-            Workspace, where to place duplicated project
+            Destination Workspace
 
         description : typing.Optional[str]
-            Description of duplicated project
+            Project Description
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1167,6 +1207,7 @@ class AsyncRawProjectsClient:
     async def list(
         self,
         *,
+        archived: typing.Optional[bool] = None,
         filter: typing.Optional[str] = None,
         ids: typing.Optional[str] = None,
         include: typing.Optional[str] = None,
@@ -1185,6 +1226,9 @@ class AsyncRawProjectsClient:
 
         Parameters
         ----------
+        archived : typing.Optional[bool]
+            Filter by projects that belong to archived workspaces
+
         filter : typing.Optional[str]
             Filter projects by pinned status. Use 'pinned_only' to return only pinned projects, 'exclude_pinned' to return only non-pinned projects, or 'all' to return all projects.
 
@@ -1232,6 +1276,7 @@ class AsyncRawProjectsClient:
             "api/projects/",
             method="GET",
             params={
+                "archived": archived,
                 "filter": filter,
                 "ids": ids,
                 "include": include,
@@ -1260,6 +1305,7 @@ class AsyncRawProjectsClient:
 
                 async def _get_next():
                     return await self.list(
+                        archived=archived,
                         filter=filter,
                         ids=ids,
                         include=include,
@@ -1285,7 +1331,7 @@ class AsyncRawProjectsClient:
         *,
         annotator_evaluation_enabled: typing.Optional[bool] = OMIT,
         color: typing.Optional[str] = OMIT,
-        control_weights: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        control_weights: typing.Optional[typing.Dict[str, typing.Optional[ControlTagWeightRequest]]] = OMIT,
         created_by: typing.Optional[UserSimpleRequest] = OMIT,
         description: typing.Optional[str] = OMIT,
         enable_empty_annotation: typing.Optional[bool] = OMIT,
@@ -1325,14 +1371,14 @@ class AsyncRawProjectsClient:
 
         color : typing.Optional[str]
 
-        control_weights : typing.Optional[typing.Dict[str, typing.Any]]
-            Dict of weights for each control tag in metric calculation.
+        control_weights : typing.Optional[typing.Dict[str, typing.Optional[ControlTagWeightRequest]]]
+            Dict of weights for each control tag in metric calculation. Keys are control tag names from the labeling config. At least one tag must have a non-zero overall weight.
 
         created_by : typing.Optional[UserSimpleRequest]
             Project owner
 
         description : typing.Optional[str]
-            Project description
+            Project Description
 
         enable_empty_annotation : typing.Optional[bool]
             Allow annotators to submit empty annotations
@@ -1399,9 +1445,10 @@ class AsyncRawProjectsClient:
             Task data credentials: password
 
         title : typing.Optional[str]
-            Project name. Must be between 3 and 50 characters long.
+            Project Title
 
         workspace : typing.Optional[int]
+            In Workspace
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1417,7 +1464,11 @@ class AsyncRawProjectsClient:
             json={
                 "annotator_evaluation_enabled": annotator_evaluation_enabled,
                 "color": color,
-                "control_weights": control_weights,
+                "control_weights": convert_and_respect_annotation_metadata(
+                    object_=control_weights,
+                    annotation=typing.Optional[typing.Dict[str, typing.Optional[ControlTagWeightRequest]]],
+                    direction="write",
+                ),
                 "created_by": convert_and_respect_annotation_metadata(
                     object_=created_by, annotation=UserSimpleRequest, direction="write"
                 ),
@@ -1472,6 +1523,7 @@ class AsyncRawProjectsClient:
     async def list_counts(
         self,
         *,
+        archived: typing.Optional[bool] = None,
         filter: typing.Optional[str] = None,
         ids: typing.Optional[str] = None,
         include: typing.Optional[str] = None,
@@ -1489,6 +1541,9 @@ class AsyncRawProjectsClient:
 
         Parameters
         ----------
+        archived : typing.Optional[bool]
+            Filter by projects that belong to archived workspaces
+
         filter : typing.Optional[str]
             Filter projects by pinned status. Use 'pinned_only' to return only pinned projects, 'exclude_pinned' to return only non-pinned projects, or 'all' to return all projects.
 
@@ -1531,6 +1586,7 @@ class AsyncRawProjectsClient:
             "api/projects/counts/",
             method="GET",
             params={
+                "archived": archived,
                 "filter": filter,
                 "ids": ids,
                 "include": include,
@@ -1654,7 +1710,7 @@ class AsyncRawProjectsClient:
         assignment_settings: typing.Optional[AssignmentSettingsRequest] = OMIT,
         color: typing.Optional[str] = OMIT,
         comment_classification_config: typing.Optional[str] = OMIT,
-        control_weights: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        control_weights: typing.Optional[typing.Dict[str, typing.Optional[ControlTagWeightRequest]]] = OMIT,
         created_by: typing.Optional[UserSimpleRequest] = OMIT,
         custom_script: typing.Optional[str] = OMIT,
         custom_task_lock_ttl: typing.Optional[int] = OMIT,
@@ -1703,53 +1759,65 @@ class AsyncRawProjectsClient:
             Maximum number of members to return
 
         agreement_methodology : typing.Optional[AgreementMethodologyEnum]
+            Methodology (Consensus / Pairwise Averaging)
+
+            * `consensus` - Consensus
+            * `pairwise` - Pairwise Averaging
 
         agreement_threshold : typing.Optional[str]
-            Minimum percent agreement threshold for which minimum number of annotators must agree
+            Agreement threshold
 
         annotation_limit_count : typing.Optional[int]
+            Limit by number of tasks
 
         annotation_limit_percent : typing.Optional[str]
+            Limit by percentage of tasks
 
         annotator_evaluation_continuous_tasks : typing.Optional[int]
+            Continuous Evaluation: Required tasks
 
         annotator_evaluation_enabled : typing.Optional[bool]
-            Enable annotator evaluation for the project
+            Evaluate all annotators against ground truth
 
         annotator_evaluation_minimum_score : typing.Optional[str]
+            Score required to pass evaluation
 
         annotator_evaluation_minimum_tasks : typing.Optional[int]
+            Number of tasks for evaluation
 
         annotator_evaluation_onboarding_tasks : typing.Optional[int]
+            Onboarding Evaluation: Required tasks
 
         assignment_settings : typing.Optional[AssignmentSettingsRequest]
 
         color : typing.Optional[str]
+            Color
 
         comment_classification_config : typing.Optional[str]
 
-        control_weights : typing.Optional[typing.Dict[str, typing.Any]]
-            Dict of weights for each control tag in metric calculation.
+        control_weights : typing.Optional[typing.Dict[str, typing.Optional[ControlTagWeightRequest]]]
+            Dict of weights for each control tag in metric calculation. Keys are control tag names from the labeling config. At least one tag must have a non-zero overall weight.
 
         created_by : typing.Optional[UserSimpleRequest]
             Project owner
 
         custom_script : typing.Optional[str]
+            Plugins
 
         custom_task_lock_ttl : typing.Optional[int]
-            TTL in seconds for task reservations, on new and existing tasks
+            Task reservation time. TTL in seconds (UI displays and edits this value in minutes).
 
         description : typing.Optional[str]
-            Project description
+            Description
 
         enable_empty_annotation : typing.Optional[bool]
-            Allow annotators to submit empty annotations
+            Allow empty annotations
 
         evaluate_predictions_automatically : typing.Optional[bool]
             Retrieve and display predictions when loading a task
 
         expert_instruction : typing.Optional[str]
-            Labeling instructions in HTML format
+            Instructions
 
         is_draft : typing.Optional[bool]
             Whether or not the project is in the middle of being created
@@ -1758,13 +1826,13 @@ class AsyncRawProjectsClient:
             Whether or not the project is published to annotators
 
         label_config : typing.Optional[str]
-            Label config in XML format. See more about it in documentation
+            Labeling Configuration
 
         max_additional_annotators_assignable : typing.Optional[int]
-            Maximum number of additional annotators that can be assigned to a low agreement task
+            Maximum additional annotators
 
         maximum_annotations : typing.Optional[int]
-            Maximum number of annotations for one task. If the number of annotations per task is equal or greater to this value, the task is completed (is_labeled=True)
+            Annotations per task
 
         min_annotations_to_start_training : typing.Optional[int]
             Minimum number of completed tasks after which model training is started
@@ -1775,13 +1843,16 @@ class AsyncRawProjectsClient:
         organization : typing.Optional[int]
 
         overlap_cohort_percentage : typing.Optional[int]
+            Annotations per task coverage
 
         pause_on_failed_annotator_evaluation : typing.Optional[bool]
+            Pause annotator on failed evaluation
 
         pinned_at : typing.Optional[dt.datetime]
             Pinned date and time
 
         require_comment_on_skip : typing.Optional[bool]
+            Require comment to skip
 
         reveal_preannotations_interactively : typing.Optional[bool]
             Reveal pre-annotations interactively
@@ -1791,38 +1862,42 @@ class AsyncRawProjectsClient:
         sampling : typing.Optional[SamplingDe5Enum]
 
         show_annotation_history : typing.Optional[bool]
-            Show annotation history to annotator
+            Show Data Manager to Annotators
 
         show_collab_predictions : typing.Optional[bool]
-            If set, the annotator can view model predictions
+            Use predictions to pre-label Tasks
 
         show_ground_truth_first : typing.Optional[bool]
             Onboarding mode (true): show ground truth tasks first in the labeling stream
 
         show_instruction : typing.Optional[bool]
-            Show instructions to the annotator before they start
+            Show instructions before labeling
 
         show_overlap_first : typing.Optional[bool]
+            Show tasks with overlap first
 
         show_skip_button : typing.Optional[bool]
-            Show a skip button in interface and allow annotators to skip the task
+            Allow skipping tasks
 
         show_unused_data_columns_to_annotators : typing.Optional[bool]
+            Show only columns used in labeling configuration to Annotators. API uses inverse field semantics here: set false to show only used columns, set true to show all task.data columns.
 
         skip_queue : typing.Optional[SkipQueueEnum]
 
         strict_task_overlap : typing.Optional[bool]
+            Enforce strict overlap limit
 
         task_data_login : typing.Optional[str]
-            Task data credentials: login
+            Login
 
         task_data_password : typing.Optional[str]
-            Task data credentials: password
+            Password
 
         title : typing.Optional[str]
-            Project name. Must be between 3 and 50 characters long.
+            Project Name
 
         workspace : typing.Optional[int]
+            Workspace
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1853,7 +1928,11 @@ class AsyncRawProjectsClient:
                 ),
                 "color": color,
                 "comment_classification_config": comment_classification_config,
-                "control_weights": control_weights,
+                "control_weights": convert_and_respect_annotation_metadata(
+                    object_=control_weights,
+                    annotation=typing.Optional[typing.Dict[str, typing.Optional[ControlTagWeightRequest]]],
+                    direction="write",
+                ),
                 "created_by": convert_and_respect_annotation_metadata(
                     object_=created_by, annotation=UserSimpleRequest, direction="write"
                 ),
@@ -1977,19 +2056,19 @@ class AsyncRawProjectsClient:
         id : int
 
         mode : ModeEnum
-            Data that you want to duplicate: settings only, with tasks, with annotations
+            What to Duplicate (Project configuration only / Project configuration and tasks)
 
             * `settings` - Only settings
             * `settings,data` - Settings and tasks
 
         title : str
-            Title of duplicated project
+            Project Name
 
         workspace : int
-            Workspace, where to place duplicated project
+            Destination Workspace
 
         description : typing.Optional[str]
-            Description of duplicated project
+            Project Description
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

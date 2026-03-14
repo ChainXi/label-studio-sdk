@@ -18,6 +18,7 @@ class BlueprintList(UncheckedBaseModel):
     id: typing.Optional[int] = None
     share_id: typing.Optional[str] = None
     short_url: typing.Optional[str] = None
+    task_count: typing.Optional[str] = None
     title: typing.Optional[str] = pydantic.Field(default=None)
     """
     Blueprint name. Must be between 3 and 50 characters long.

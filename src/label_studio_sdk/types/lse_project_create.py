@@ -6,6 +6,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
+from .control_tag_weight import ControlTagWeight
 from .sampling_de5enum import SamplingDe5Enum
 from .skip_queue_enum import SkipQueueEnum
 from .user_simple import UserSimple
@@ -33,9 +34,9 @@ class LseProjectCreate(UncheckedBaseModel):
     Flag to detect is project ready for bulk annotation
     """
 
-    control_weights: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
+    control_weights: typing.Optional[typing.Dict[str, typing.Optional[ControlTagWeight]]] = pydantic.Field(default=None)
     """
-    Dict of weights for each control tag in metric calculation.
+    Dict of weights for each control tag in metric calculation. Keys are control tag names from the labeling config. At least one tag must have a non-zero overall weight.
     """
 
     created_at: typing.Optional[dt.datetime] = None
@@ -46,7 +47,7 @@ class LseProjectCreate(UncheckedBaseModel):
 
     description: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Project description
+    Project Description
     """
 
     enable_empty_annotation: typing.Optional[bool] = pydantic.Field(default=None)
@@ -185,7 +186,7 @@ class LseProjectCreate(UncheckedBaseModel):
 
     title: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Project name. Must be between 3 and 50 characters long.
+    Project Title
     """
 
     total_annotations_number: typing.Optional[int] = pydantic.Field(default=None)
@@ -203,7 +204,10 @@ class LseProjectCreate(UncheckedBaseModel):
     Useful annotation number in project not including skipped_annotations_number and ground_truth_number. Total annotations = annotation_number + skipped_annotations_number + ground_truth_number
     """
 
-    workspace: typing.Optional[int] = None
+    workspace: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    In Workspace
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

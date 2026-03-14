@@ -51,6 +51,7 @@ class RawBulkClient:
         id : int
 
         all_ : bool
+            Apply to all project members
 
         last_activity_gte : typing.Optional[str]
             Filter by last activity (ISO 8601 formatted date). Only when all=True.
@@ -65,13 +66,16 @@ class RawBulkClient:
             Search term for filtering members by name, email, or username. Only when all=True.
 
         tags : typing.Optional[str]
-            Filter tags by in list (comma-separated values)
+            Multiple values may be separated by commas. (comma-separated values)
 
         excluded : typing.Optional[typing.Sequence[int]]
+            Excluded user IDs
 
         included : typing.Optional[typing.Sequence[int]]
+            Included user IDs
 
         roles : typing.Optional[typing.Sequence[ProjectMemberBulkAssignRolesRequest]]
+            Member roles
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -157,7 +161,7 @@ class RawBulkClient:
             Search term for filtering members by name, email, or username. Only when all=True.
 
         tags : typing.Optional[str]
-            Filter tags by in list (comma-separated values)
+            Multiple values may be separated by commas. (comma-separated values)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -228,6 +232,7 @@ class AsyncRawBulkClient:
         id : int
 
         all_ : bool
+            Apply to all project members
 
         last_activity_gte : typing.Optional[str]
             Filter by last activity (ISO 8601 formatted date). Only when all=True.
@@ -242,13 +247,16 @@ class AsyncRawBulkClient:
             Search term for filtering members by name, email, or username. Only when all=True.
 
         tags : typing.Optional[str]
-            Filter tags by in list (comma-separated values)
+            Multiple values may be separated by commas. (comma-separated values)
 
         excluded : typing.Optional[typing.Sequence[int]]
+            Excluded user IDs
 
         included : typing.Optional[typing.Sequence[int]]
+            Included user IDs
 
         roles : typing.Optional[typing.Sequence[ProjectMemberBulkAssignRolesRequest]]
+            Member roles
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -334,7 +342,7 @@ class AsyncRawBulkClient:
             Search term for filtering members by name, email, or username. Only when all=True.
 
         tags : typing.Optional[str]
-            Filter tags by in list (comma-separated values)
+            Multiple values may be separated by commas. (comma-separated values)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

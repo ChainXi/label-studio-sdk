@@ -18,6 +18,11 @@ class SamlSettingsUpdate(UncheckedBaseModel):
     Organization web domain or domains; use comma separated list with no spaces for multiple. Example:<br><br>labelstud.io,humansignal.com<br><br>IMPORTANT: DO NOT PUT COMMON DOMAINS LIKE GMAIL.COM, YAHOO.COM, ETC. IN THIS FIELD
     """
 
+    idp_provider: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Identity Provider preset key (e.g. okta, azure, google, custom)
+    """
+
     mapping_email: typing.Optional[str] = pydantic.Field(default=None)
     """
     Mapping attributes: user email from SAML request
@@ -48,9 +53,20 @@ class SamlSettingsUpdate(UncheckedBaseModel):
     Metadata XML file
     """
 
-    projects_groups: typing.Optional[typing.List[ProjectGroup]] = None
-    roles_groups: typing.Optional[typing.List[typing.List[str]]] = None
-    workspaces_groups: typing.Optional[typing.List[typing.List[str]]] = None
+    projects_groups: typing.Optional[typing.List[ProjectGroup]] = pydantic.Field(default=None)
+    """
+    Projects to Groups Mapping. List of objects with project_id, group, role.
+    """
+
+    roles_groups: typing.Optional[typing.List[typing.List[str]]] = pydantic.Field(default=None)
+    """
+    Organization Roles to Groups Mapping. List of [role_name, group_name] pairs.
+    """
+
+    workspaces_groups: typing.Optional[typing.List[typing.List[str]]] = pydantic.Field(default=None)
+    """
+    Workspaces to Groups Mapping. List of [workspace_title, group_name] pairs.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
